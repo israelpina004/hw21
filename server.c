@@ -1,4 +1,3 @@
-
 #include "pipe_networking.h"
 
 int main() {
@@ -6,10 +5,21 @@ int main() {
   int to_client;
   int from_client;
 
-  from_client = server_handshake( &to_client );
-  
-  char input[100];
-  
   while(1) {
-    
+    from_client = server_handshake( &to_client );
+    while(1) {
+      char temp[100];
+      read(from_client, temp, sizeof(temp));
+      printf("Processing string ...\n");
+      int i = 0;
+      while(temp[i]) {
+        if(temp[i] >= 'a' && temp[i] <= 'z') {
+          temp[i] = temp[i] - 32;
+        }
+        i++;
+      }
+      write(to_client, temp, sizeof(temp));
+    }
+  }
+  return 0;
 }
